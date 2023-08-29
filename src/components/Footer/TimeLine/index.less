@@ -1,0 +1,67 @@
+@import '@/variables.less';
+
+.time-line{
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+  overflow-x: auto;
+  &__wrapper{
+    padding-top: 10px;
+    padding-bottom: 6px;
+    user-select: none;
+    width: 100%;
+    height: 42px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__time{
+    position: relative;
+    padding-bottom: 4px;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .time__firstTick{
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    flex-shrink: 0;
+    margin: 0;
+    color: @headerTitleTextColor;
+    transform: scale(0.9);
+  }
+  .time__tick{
+    position: absolute;
+    top: -2px;
+    flex-shrink: 0;
+    margin: 0;
+    color: @headerTitleTextColor;
+    transform: scale(0.9);
+  }
+
+  &__ruling{
+    position: relative;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .ruling__long-tick{
+    position: absolute;
+    border-left: 1px solid @disabledColor;
+    height: 10px;
+  }
+  .ruling__short-tick{
+    position: absolute;
+    top: 5px;
+    border-left: 1px solid @disabledColor;
+    height: 5px;
+  }
+
+  &__track-body{
+    width: 100%;
+  }
+}
+

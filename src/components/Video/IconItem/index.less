@@ -1,0 +1,44 @@
+@import '@/variables.less';
+.icon-item{
+  &__icon-wrapper{
+    margin: 0 8px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: @ThemeColor;
+    transition: background-color 0.3s ease-in-out;
+    &:hover{
+      background-color: @headerIconBgColor;
+    }
+  }
+  &__icon-wrapper.disabled{
+    &:hover{
+      background-color: @ThemeColor;
+    }
+  }
+
+  &__icon-button{
+    width: 100%;
+    height: 100%;
+    color: @headerTitleTextColor;
+    background-color: transparent;
+    padding: 0;
+    vertical-align: middle;
+    border: 0;
+    font-size: 1.5em;
+    svg{
+      height: 1em;
+      width: 1em;
+    }
+    &:focus-visible{
+      outline: none;
+    }
+  }
+
+  &__icon-button.disabled{
+    cursor: not-allowed;
+    color: @disabledColor;
+  }
+}

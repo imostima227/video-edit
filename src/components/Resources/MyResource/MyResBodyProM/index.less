@@ -1,0 +1,90 @@
+@import '@/variables.less';
+
+.myresource-body{
+  user-select: none;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  height: 0;
+  max-height: 100%;
+  overflow: hidden;
+  &__media{
+    position: relative;
+    z-index: 1;
+    flex: 1 1;
+    height: 0;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__section{
+    position: relative;
+    height: calc(100%-18px);
+    top: 18px;
+    padding: 0 13px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: 0;
+    &::-webkit-scrollbar{
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb{
+      width: 6px;
+      background-color: @disabledColor;
+      background-clip: content-box;
+      border: 0 solid transparent;
+      border-radius: 0;
+    }
+
+    &::-webkit-scrollbar-track{
+      width: 6px;
+      background-color: @bottomBorderColor;
+      background-clip: content-box;
+      border: 0 solid transparent;
+      border-radius: 0;
+    }
+
+    &::-webkit-scrollbar-track-piece{
+      background-color: transparent;
+    }
+  }
+
+  .section__save_video_list{
+    position: relative;
+    height: 100%;
+  }
+
+  .section__list{
+    flex: 1 1 auto;
+    flex-flow: row wrap;
+    display: flex;
+    gap: 0px;
+  }
+
+  &__footer{
+    position: relative;
+    z-index: 11;
+    flex-shrink: 0;
+    height: 50px;
+    border-top: 1px solid @bottomBorderColor;
+    display: flex;
+    align-items: stretch;
+    background-color: @ThemeColor;
+  }
+
+  &__footer-item{
+    flex: 1 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+    &:hover{
+      background-color: @headerIconBgColor;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+@import '@/variables.less';
+
+.resources{
+  position: relative;
+  user-select: auto;
+  height: 100%;
+  max-width: calc(100vw - 580px);
+  min-width: 312px;
+  
+  &__section{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-right: 4px;
+    height: 100%;
+    background-color: @ThemeColor;
+  }
+
+  &__resizer{
+    position: absolute;
+    user-select: none;
+    z-index: 10;
+    width: 4px;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    cursor: col-resize;
+    background-color: @mainResizer;
+  }
+}
+
+#material div, #material img, #material video, #material span{
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}

@@ -1,0 +1,109 @@
+@import '@/variables.less';
+
+.video-footer{
+  padding-top: 0px;
+  &__slidebar{
+    height: 46px;
+    padding-top: 4px;
+    padding-bottom: 10px;
+  }
+
+  &__time{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .time__currenttime{
+    color: @timeDisabled;
+  }
+  .time__timedisabled{
+    color: @timeDisabled;
+  }
+
+  &__control{
+    position: relative;
+    z-index: 99;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: hsla(0,0%,100%,.4);
+  }
+
+  .control__left{
+    min-width: 164px;
+    flex: 1 1;
+    margin-right: 10px;
+
+    .control__button{
+      width: 77px;
+      text-align: center;
+      caret-color: transparent;
+      cursor: default;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      color: @headerTitleTextColor;
+      font-size: 12px;
+      background-color: @sideitemActiveBgColor;
+      border: 1px solid @disabledColor;
+      border-radius: 2px;
+      font-variant: tabular-nums;
+      line-height: 1.66667;
+      list-style: none;
+      position: relative;
+      display: inline;
+      margin-right: 5px;
+    }
+  }
+
+  
+
+  .control__icon-group{
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .control__right{
+    flex: 1 1;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 10px;
+    .control__button{
+      padding: 0;
+      vertical-align: middle;
+      border: 0;
+      width: 30px;
+      height: 30px;
+      color: @headerTitleTextColor;
+      background-color: @ThemeColor;
+      transition: background-color 0.3s ease-in-out;
+      &:hover{
+        background-color: @headerIconBgColor;
+      }
+    }
+
+  }
+}
+
+
+.dropdown{
+  background-color: @sideitemActiveBgColor;
+  border: 1px solid @disabledColor;
+  border-radius: 2px;
+  font-variant: tabular-nums;
+  .ant-dropdown-menu{
+    background-color: @sideitemActiveBgColor;
+    font-variant: tabular-nums;
+    .ant-dropdown-menu-item{
+      font-size: 12px;
+      color: @headerTitleTextColor;
+    }
+  }
+}

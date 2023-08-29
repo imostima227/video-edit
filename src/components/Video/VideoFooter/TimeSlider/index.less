@@ -1,0 +1,59 @@
+@import '@/variables.less';
+
+.time-slider{
+  height: 46px;
+  padding-top: 4px;
+  padding-bottom: 10px;
+
+  &__time{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .time__currenttime{
+    color: @timeDisabled;
+  }
+  .time__timedisabled{
+    color: @timeDisabled;
+  }
+
+  &__wrapper{
+    padding: 6px 0 8px;
+  }
+
+  &__track{
+    height: 4px;
+    position: relative;
+    background-color: @disabledColor;
+  }
+
+  &__handerTime{
+    position: absolute;
+    width: 9px;
+    height: 6px;
+    background: @sideItemActiveColor;
+    border-radius: 0;
+    border: none;
+    margin-top: -6px;
+    transition: none;
+    left: 0;
+    right: auto;
+    transform: translateX(-50%);
+    &::after{
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      top: 6px;
+      cursor: pointer;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid @sideItemActiveColor;
+      margin: 0;
+      border-radius: 0;
+      left: 0;
+      background-color: transparent;
+    }
+  }
+}

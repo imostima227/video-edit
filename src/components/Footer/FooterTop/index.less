@@ -1,0 +1,99 @@
+@import '@/variables.less';
+
+.footer-top{
+  height: 46px;
+  padding: 0 10px;
+  border-bottom: 1px solid @bottomBorderColor;
+  color: @headerSaveTextColor;
+  &__bar{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 8px;
+  }
+  .ant-slider{
+    color: @headerTitleTextColor;
+    position: relative;
+    font-size: 12px;
+    line-height: 1.66667;
+    list-style: none;
+    height: 12px;
+    margin: 10px 6px;
+    padding: 4px 0;
+    cursor: pointer;
+    touch-action: none;
+    .ant-slider-rail{
+      height: 2px;
+      position: absolute;
+      background-color: @disabledColor;
+      border-radius: 3px;
+      transition: background-color .3s;
+    }
+    .ant-slider-track{
+      height: 2px;
+      background-color: @disabledColor;
+      border-radius: 3px;
+      transition: background-color .3s;
+    }
+    .ant-slider-step{
+      height: 2px;
+      position: absolute;
+      width: 100%;
+      background: transparent;
+    }
+    .ant-slider-handle{
+      height: 14px;
+      width: 14px;
+      margin-top: -4px;
+      background-color: @ThemeColor;
+      border: 0;
+      &:focus{
+        border-color: #fff;
+        outline: none;
+        box-shadow: 0 0 0 5px transparent;
+      }
+      &::before{
+        content: '';
+        position: absolute;
+        z-index: 0;
+        width: 10px;
+        height: 10px;
+        left: 50%;
+        top: 50%;
+        margin-left: -5px;
+        margin-top: -5px;
+        background-color: @headerTitleTextColor;
+        border-radius: 50%;
+      }
+      &::after{
+        content: '';
+        position: absolute;
+        z-index: 1;
+        width: 6px;
+        height: 6px;
+        left: 50%;
+        top: 50%;
+        margin-left: -3px;
+        margin-top: -3px;
+        background-color: @ThemeColor;
+        box-shadow: none;
+        border-radius: 50%;
+      }
+    }
+    .ant-slider-mark{
+      position: absolute;
+      top: 14px;
+      left: 0;
+      width: 100%;
+      font-size: 12px;
+    }
+    
+  }
+  .ant-slider-disabled .ant-slider-handle{
+    cursor: not-allowed;
+    &::before{
+      background-color: @disabledColor;
+    }
+  }
+}

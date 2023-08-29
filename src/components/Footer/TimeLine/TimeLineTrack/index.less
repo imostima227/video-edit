@@ -1,0 +1,48 @@
+@import '@/variables.less';
+
+.time-line-track{
+  height: 100%;
+  box-sizing: border-box;
+  margin-right: 1px;
+  position: absolute;
+  
+  &__item--video{
+    height: 100%;
+    min-width: 5px;
+    border-radius: 5px;
+    background-color: @headerSaveTextColor;
+    &:hover{
+      border: 1px solid rgba(255,255,255,.5);
+    }
+  }
+
+  &__dropdown--video{
+    width: 165px;
+    min-width: 77px;
+    left: 0px;
+    padding: 5px;
+    border: 1px solid @dropDownBorder;
+    background-color: @dropDownBgColor;
+    box-shadow: none;
+    user-select: none;
+    .dropdown__wrapper--video{
+      display: flex;
+      flex-direction: column;
+      color: @headerTitleTextColor;
+      font-size: 12px;
+    }
+    .dropdown__item--video{
+      width: 100%;
+      margin: 1px 0;
+      padding-left: 10px;
+      border-radius: 2px;
+      transition: background-color 0.1s ease-out;
+      &:hover{
+        background-color: @dropDownSelected;
+        color: white;
+      }
+    }
+  }
+  
+
+}

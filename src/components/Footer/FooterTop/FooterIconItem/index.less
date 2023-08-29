@@ -1,0 +1,30 @@
+@import '@/variables.less';
+
+.footer-icon-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 3px;
+  background-color: @ThemeColor;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  &:hover{
+    background-color: @disabledColor;
+  }
+  &__wrapper{
+    font-size: 14px;
+    color: @headerSaveIconColor;
+  }
+  &_wrapper.disabled{
+    color: @timeDisabled;
+  }
+}
+
+.footer-icon-item.disabled{
+  cursor: not-allowed;
+  &:hover{
+    background: transparent;
+  }
+}

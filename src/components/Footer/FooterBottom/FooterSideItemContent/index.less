@@ -1,0 +1,28 @@
+@import '@/variables.less';
+
+.footer-side-item{
+  position: absolute;
+  left: 0;
+  width: 100%;
+  &__wrapper{
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translate3d(0,-50%,0);
+  }
+  &__icon-wrapper{
+    width: 30px;
+    height: 30px;
+    color: @headerSaveIconColor;
+    font-size: 14px;
+    border-radius: 3px;
+  }
+  &__icon{
+    font-size: 15px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    color: inherit;
+    text-align: center;
+  }
+}

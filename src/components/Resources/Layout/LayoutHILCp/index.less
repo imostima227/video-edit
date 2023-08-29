@@ -1,0 +1,147 @@
+@import '@/variables.less';
+
+.layout-hilcp{
+  display: flex;
+  flex-direction: column;
+  color: @headerTitleTextColor;
+  width: 100%;
+  height: 100%;
+  &__header{
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  &__content{
+    user-select: none;
+    background-color: @sideitemActiveBgColor;
+  }
+
+  &__menu{
+    position: relative;
+    height: 36px;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .menu__ul{
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menu__li{
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 10px 19px;
+    cursor: pointer;
+  }
+  .menu__li.selected{
+    color: #fff;
+    background-color: @ThemeColor;
+  }
+
+  &__menu-input{
+    background-color: @ThemeColor;
+    height: 40px;
+    padding: 16px 19px 0;
+  }
+
+  .menu-input__antd-input{
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    font-size: 12px;
+    line-height: 1.66667;
+    background-color: @searchInputBgColor;
+    color: white;
+    background-image: none;
+    border: 1px solid @searchInputBorderColor;
+    border-radius: 3px;
+    transition: all .3s;
+    display: inline-flex;
+    padding: 1px 7px;
+    input{
+      background-color: @searchInputBgColor;
+      caret-color: @searchInputCaretColor;
+      color: white;
+      &::placeholder{
+        color: @headerSaveTextColor;
+      }
+    }
+  }
+
+  &__second-menu{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    background-color: @ThemeColor;
+    padding: 18px 19px;
+    border-bottom: 1px solid @bottomBorderColor;
+  }
+
+  .second-menu__ul{
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 8px;
+    column-gap: 2px;
+    padding: 0;
+    margin: 0;
+    height: 30px;
+    overflow: hidden;
+  }
+
+  .second-menu__li{
+    padding: 0 4px;
+    width: 64px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: @headerSaveTextColor;
+    height: 30px;
+  }
+  .second-menu__li.selected{
+    background-color: @mainResizer;
+    color: @headerTitleTextColor;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  .second-menu__icon-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 60px;
+    user-select: none;
+  }
+
+  .second-menu__icon{
+    display: flex;
+    width: 30px;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: -3px;
+    flex-shrink: 0;
+    color: inherit;
+    text-align: center;
+    vertical-align: -0.125em;
+  }
+  .second-menu__icon.clicked{
+    transform:rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transition: transform .5s ease-in-out;
+  }
+  .second-menu__icon.reset{
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transition: transform .5s ease-in-out;
+  }
+}

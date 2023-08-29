@@ -1,0 +1,39 @@
+@import '@/variables.less';
+
+.side-item{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+  color: @headerTitleTextColor;
+  border-radius: 6px;
+  font-size: 10px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  &:hover{
+    background-color: @headerIconBgColor;
+  }
+  &__icon-wrapper{
+    display: flex;
+    width: 30px;
+    height: 30px;
+    margin-right: 3px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__icon{
+    width: 1.2em; height: 1.2em;
+    font-size: 16px;
+    fill: currentColor;
+    overflow: hidden;
+  }
+}
+
+.side-item.active{
+  color: @sideItemActiveColor;
+  background-color: @sideitemActiveBgColor;
+}

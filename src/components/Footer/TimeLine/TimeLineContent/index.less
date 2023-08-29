@@ -1,0 +1,42 @@
+@import '@/variables.less';
+
+.time-line-content{
+  width: 100%;
+  overflow: hidden;
+  &__wrapper--empty{
+    width: 100%;
+    height: 100%;
+    background-color: @trackBgColor;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .wrapper--empty__icon-wrapper{
+    width: 20px;
+    height: 20px;
+    color: @timeDisabled;
+    margin-right: 5px;
+  }
+  .wrapper--empty__text-wrapper{
+    height: 20px;
+  }
+  .wrapper--empty__text{
+    position: relative;
+    top: 1px;
+    text-align: center;
+    font-size: 12px;
+    color: @timeDisabled;
+  }
+
+  &__wrapper{
+    width: 100%;
+    height: 100%;
+  }
+
+  .wrapper__item{
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    height: fit-content;
+  }
+}
