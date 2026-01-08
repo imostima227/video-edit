@@ -46,13 +46,20 @@ const MyResBodyProM: React.FC<MyResBodyProMProps> = ({ width }) => {
   // 点击选中视频
   const handleClickVideo = useCallback((video: Video | undefined) => {
     if(video){
-      const curVideo = videoListCtr.getVideoById(video.id);
-      console.log('click video:'+curVideo?.file.name);
-      videoList.forEach(el => {
-        if(el.id === video.id){
-          dispatch(setVideoItem(el));
-        }
-      });
+      // const curVideo = videoListCtr.getVideoById(video.id);
+      // console.log('click video:'+curVideo?.file.name);
+      // videoList.forEach(el => {
+      //   if(el.id === video.id){
+      //     dispatch(setVideoItem(el));
+      //   }
+      // });
+      dispatch(setVideoItem({
+        id: video.id,
+        name: video.file.name, // 确保这里取的是文件名
+        videoUrl: video.videoUrl, // 关键！确保这里传入了 blob:http://... 地址
+        coverUrl: video.coverUrl,
+        duration: video.duration,
+      }));
 
       dispatch(setIsPlaying(true)); // 设置视频为正在播放
     
@@ -60,7 +67,7 @@ const MyResBodyProM: React.FC<MyResBodyProMProps> = ({ width }) => {
       //   dispatch(setFrameWidth(getMinFrameWidth(windowSize.width- 129 - 112 - 10,curVideo.frames)));
       // }
     }
-  },[dispatch,videoList,videoListCtr]);
+  },[dispatch]);
 
   return (
     <div className='myresource-body'>

@@ -62,6 +62,15 @@ module.exports = {
       {
         "skipBlankLines": true,
       }
+    ],'react/no-unknown-property': [
+      'error',
+      {
+        'ignore': [
+          'intensity', 'position', 'args', 'object', 'geometry', 'material', 
+          'attach', 'castShadow', 'receiveShadow', 'rotation', 'scale', 
+          'dispose', 'target', 'angle', 'penumbra', 'decay', 'distance'
+        ] 
+      }
     ],
   },
 };
