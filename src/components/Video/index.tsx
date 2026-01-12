@@ -158,9 +158,13 @@ const Video: React.FC = () => {
     };
   
     // 只有在非 3D 模式下，才去操作 video 标签
-    if (isVideoPlaying && !is3DMode) {
+    if (isVideoPlaying && !is3DMode && videoItem.videoUrl) {
       if (videoRef.current) {
-        videoRef.current.play();
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => { return; });
+        }
+
         animationId = requestAnimationFrame(render);
       }
     } else {
@@ -173,7 +177,7 @@ const Video: React.FC = () => {
     return () => {
       cancelAnimationFrame(animationId);
     };
-  }, [isVideoPlaying, is3DMode, dispatch]); // 依赖项加入了 is3DMode
+  }, [isVideoPlaying, is3DMode, dispatch, videoItem.videoUrl]); // 依赖项加入了 is3DMode
 
   useEffect(() => {
     const video = videoRef.current;
@@ -245,6 +249,9 @@ const Video: React.FC = () => {
       context?.fillRect(0, 0, canvas.width, canvas.height);
       video.src = '';
       video.currentTime = 0;
+
+      dispatch(setIsPlaying(false));
+
       video.load();
       dispatch(setVideoTime(0));
       setVideoDuration(0);
