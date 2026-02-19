@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { VideoRenderType } from '@type/video';
 
-interface videoItemState{
+interface VideoItemState{
   value: VideoRenderType
 }
 
-const initialState: videoItemState = {
+const initialState: VideoItemState = {
   value: {
     id: '',
     name: '',
@@ -19,7 +19,7 @@ export const videoItemSlice = createSlice({
   name: 'videoItem',
   initialState,
   reducers: {
-    setVideoItem: (state: videoItemState,action: PayloadAction<VideoRenderType>) => {
+    setVideoItem: (state: VideoItemState,action: PayloadAction<VideoRenderType>) => {
       state.value = action.payload;
     },
   },
