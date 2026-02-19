@@ -25,5 +25,6 @@ export const videoItemSlice = createSlice({
   },
 });
 
+
 export const { setVideoItem } = videoItemSlice.actions;
 export default videoItemSlice.reducer;
