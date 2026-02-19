@@ -2,7 +2,7 @@ import React,{ memo,useCallback } from 'react';
 import type { MenuProps } from 'antd';
 import { Dropdown,Button } from 'antd';
 import IconItem from '../IconItem';
-import TimeSlider from './TimeSlider';
+import TimeSlider, { TimeSliderRef } from './TimeSlider'; // 引入 Ref 类型
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { changeIsPlaying } from '@/redux/features/video/isVideoPlayingSlice';
 import './index.less';
@@ -14,6 +14,7 @@ interface VideoFooterProps {
   onClickIncFrame: () => void,
   onClickToStart: () => void,
   onClickToEnd: () => void,
+  timeSliderRef: React.RefObject<TimeSliderRef>
 }
 
 const items1: MenuProps = {
@@ -68,7 +69,8 @@ const VideoFooter: React.FC<VideoFooterProps> = ({
   onClickDecFrame,
   onClickIncFrame,
   onClickToStart,
-  onClickToEnd }) => {
+  onClickToEnd,
+  timeSliderRef }) => {
   const dispatch = useAppDispatch();
   const videoItem = useAppSelector(state => state.videoItem.value);
   // console.log('render videofooter');
@@ -80,6 +82,7 @@ const VideoFooter: React.FC<VideoFooterProps> = ({
   return (
     <div className='video-footer'>
       <TimeSlider
+        ref={timeSliderRef} // 透传 Ref
         duration={duration}
         onSeek={onSeek}/>
       <div className='video-footer__control'>

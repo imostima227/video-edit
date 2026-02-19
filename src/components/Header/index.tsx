@@ -16,11 +16,11 @@ const Header: React.FC = () => {
       <div className='header__wrapper'>
         <div className='header__left'>
           <div className='left__logo'>
-            <a href='https://www.kdocs.cn/welcome#home'>
+            {/* <a href='https://www.kdocs.cn/welcome#home'>
               <img src="https://volcengine-kdocs-cache.wpscdn.cn/s1/static/images/1798ea613f31952af006.svg"
                 alt=""
                 className='left__img'/>
-            </a>
+            </a> */}
             <div className='left__text'>在线剪辑</div>
           </div>
         </div>

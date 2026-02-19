@@ -5,6 +5,7 @@ import { Switch } from 'antd'; // UI组件，用于切换
 import VideoFooter from './VideoFooter';
 import Scene3D from './Scene3D';
 
+import { TimeSliderRef } from './VideoFooter/TimeSlider'; // 引入 Ref 类型
 import { changeIsPlaying, setIsPlaying } from '@/redux/features/video/isVideoPlayingSlice';
 import { useAppDispatch,useAppSelector } from '@/redux/hook';
 import { setVideoTime, addVideoFrameTime } from '@/redux/features/video/videoTimeSlice';
@@ -26,6 +27,7 @@ const Video: React.FC = () => {
   const containerHeight = useRef(0);
   const containerWidth = useRef(0);
 
+  const timeSliderRef = useRef<TimeSliderRef>(null);
   //console.log(windowSize);
   /**
    * 将需要用到canvas和video的各个函数的共有部分提取出来减少代码重复
@@ -50,11 +52,11 @@ const Video: React.FC = () => {
     if(canvas.width === containerWidth.current && canvas.height === containerHeight.current){
       context?.drawImage(video, 0, 0, containerWidth.current, containerHeight.current);
     } else if(canvas.height !== containerHeight.current){
-      context?.fillRect(0,0,1280,720);// 打底的黑色
+      context?.fillRect(0,0,canvas.width, canvas.height);// 打底的黑色
       const offsetY = (canvas.height - containerHeight.current) / 2;
       context?.drawImage(video, 0, offsetY, containerWidth.current, containerHeight.current);
     } else if(canvas.width !== containerWidth.current){
-      context?.fillRect(0,0,1280,720);// 打底的黑色
+      context?.fillRect(0,0,canvas.width, canvas.height);// 打底的黑色
       const offsetX = (canvas.width - containerWidth.current) / 2;
       context?.drawImage(video, offsetX, 0, containerWidth.current, containerHeight.current);
     }
@@ -136,20 +138,20 @@ const Video: React.FC = () => {
   // 视频渲染Loop
   useEffect(() => {
     let animationId: number;
-    let counter = 0;
+    // let counter = 0;
 
     const render = () => {
       // 如果切到了 3D 模式，原来的视频渲染逻辑要停止，否则会抢占资源
       if (is3DMode) return;
 
-      counter = (counter + 1) % 1000;
+      // counter = (counter + 1) % 1000;
       renderBody((video, canvas, context) => {
         if (canvas && video) {
           drawVideo(video, canvas, context);
           
           if (isVideoPlaying) {
-            if (counter % 3 === 0) {
-              dispatch(setVideoTime(video.currentTime));
+            if (timeSliderRef.current) {
+              timeSliderRef.current.updateTime(video.currentTime);
             }
             animationId = requestAnimationFrame(render);
           }
@@ -171,6 +173,7 @@ const Video: React.FC = () => {
       // 暂停或 3D 模式下，都要暂停视频标签
       if (videoRef.current) {
         videoRef.current.pause();
+        dispatch(setVideoTime(videoRef.current.currentTime));
       }
     }
 
@@ -188,6 +191,8 @@ const Video: React.FC = () => {
         const context = canvas.getContext('2d');
         drawVideo(video,canvas,context);
         dispatch(setVideoTime(video.currentTime));
+        // 同时更新 UI
+        timeSliderRef.current?.updateTime(video.currentTime);
       }
     };
 
@@ -223,21 +228,18 @@ const Video: React.FC = () => {
       video.load();
       dispatch(setVideoTime(0));
       setVideoDuration(videoItem.duration);
-
+      timeSliderRef.current?.updateTime(0);
 
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
-            // 播放成功，更新状态（如果需要）
-            // console.log("✅ 视频开始播放");
+            dispatch(setIsPlaying(true));
           })
           .catch(error => {
-            // 3. 捕获 "NotSupportedError" 防止程序崩溃
             console.error('⚠️ 播放失败，可能是浏览器不支持该格式或 URL 无效:', error);
             console.error('出错的 URL:', videoItem.videoUrl);
             
-            // 可以在这里提示用户
             dispatch(setIsPlaying(false)); // 停止播放状态
           });
       }
@@ -255,6 +257,7 @@ const Video: React.FC = () => {
       video.load();
       dispatch(setVideoTime(0));
       setVideoDuration(0);
+      timeSliderRef.current?.updateTime(0); // 重置 UI
     }
   },[videoItem,dispatch]);
 
@@ -435,6 +438,7 @@ const Video: React.FC = () => {
           </div>
         </div>
         <VideoFooter
+          timeSliderRef={timeSliderRef}
           duration={videoDuration}
           onSeek={handleSeek}
           onClickDecFrame={handleClickDecSecond}

@@ -1,6 +1,41 @@
 import { VideoTimeType,VideoRawTimeType, VideoRawType } from '@type/video';
 
 /**
+ * 探测视频真实帧率
+ */
+export function probeVideoFPS(videoUrl: string): Promise<number> {
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.src = videoUrl;
+    video.muted = true;
+    
+    let frameCount = 0;
+    let startTime = 0;
+
+    const check = (now: number) => {
+      if (startTime === 0) startTime = now;
+      
+      // 记录前 30 帧的时间差
+      if (frameCount < 30) {
+        frameCount++;
+        video.requestVideoFrameCallback(check);
+      } else {
+        const elapsed = (now - startTime) / 1000;
+        const fps = Math.round(frameCount / elapsed);
+        resolve(fps);
+        video.pause();
+      }
+    };
+
+    video.addEventListener('loadeddata', () => {
+      video.play();
+      video.requestVideoFrameCallback(check);
+    });
+  });
+}
+
+
+/**
    * 异步得到cover和duration
    * @returns cover和duration
    */
@@ -113,23 +148,28 @@ export function timeToMilliSeconds(videoTime: VideoTimeType): string {
 }
 
 /**
+ * 步进函数
+ * @param curTime 当前时间
+ * @param fps 帧率（可以通过上面的探测函数得到，或者默认 30）
+ * @param direction 方向：1 进，-1 退
+ */
+export function stepFrame(curTime: number, fps = 30, direction: 1 | -1): number {
+  // 1. 先换算成总帧数（加上极小的 epsilon 防止浮点数向下取整错误）
+  const currentFrame = Math.round(curTime * fps);
+  
+  // 2. 帧数加减 1
+  const nextFrame = currentFrame + direction;
+  
+  // 3. 转回时间（秒），并确保不小于 0
+  return Math.max(0, nextFrame / fps);
+}
+
+/**
  * 将video的curTime减少1帧的时间
  * @param curTime video当前的时间
  * @returns video当前时间减少1帧后的时间
  */
-export function decOneFrames(curTime: number): number{
-  const intPart = Math.floor(curTime);
-  let decPart = curTime % 1;
-  decPart = decPart - 1 / 30;
-  return intPart + decPart;
-}
-
-
-export function incOneFrames(curTime: number): number{
-  const intPart = Math.floor(curTime);
-  let decPart = curTime % 1;
-  decPart = decPart + 1 / 30;
-  return intPart + decPart;
-}
+export const decOneFrames = (time: number) => stepFrame(time, 30, -1);
+export const incOneFrames = (time: number) => stepFrame(time, 30, 1);
 
 
