@@ -11,13 +11,15 @@ class Track{
   height = -1;
   frames = -1;
   data: Blob;
+  sourceId: string;
 
-  constructor(type: string, data: Blob, duration: number){
+  constructor(type: string, data: Blob, duration: number, sourceId: string){
     this.id = uuid();
     if(this.isValidType(type)){
       this.type = type;
     }
     this.data = data;
+    this.sourceId = sourceId;
     this.duration = duration;
     this.height = this.calHeight();
     this.frames = getFrames(timeFormat(this.duration));

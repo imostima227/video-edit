@@ -41,6 +41,9 @@ const MyResBodyProM: React.FC<MyResBodyProMProps> = ({ width }) => {
         videoListCtr.addLocalVideo(newVideo);
       }
     }
+
+    // 解决重复上传同一文件无法触发 onChange 的问题
+    event.target.value = '';
   };
 
   // 点击选中视频

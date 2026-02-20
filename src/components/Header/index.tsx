@@ -1,13 +1,5 @@
 import React from 'react';
-import { Button,Space,Avatar } from 'antd';
-import {
-  CopyFilled,
-  RightSquareFilled,
-  FieldTimeOutlined,
-  CustomerServiceFilled,
-  QuestionCircleFilled,
-  UserOutlined
-} from '@ant-design/icons';
+import { Button,Space } from 'antd';
 import './index.less';
 
 const Header: React.FC = () => {
@@ -21,11 +13,11 @@ const Header: React.FC = () => {
                 alt=""
                 className='left__img'/>
             </a> */}
-            <div className='left__text'>在线剪辑</div>
+            <div className='left__text'>本地视频剪辑 (LocalEdit)</div>
           </div>
         </div>
         <div className='header__center'>
-          <div className='center__cover'>
+          {/* <div className='center__cover'>
             <div className='center__img-wrapper'>
               <img
                 src="	https://zenvideo.gtimg.com/images/bg_default_pic.png/144p_webp"
@@ -33,13 +25,14 @@ const Header: React.FC = () => {
                 className='center__img'/>
               <span className='center__tips active'>截取封面</span>
             </div>
-          </div>
+          </div> */}
           <div className='center__title'>
             <input
               type="text"
               placeholder='未命名项目'
               value='未命名项目'
-              className='center__title-input' />
+              className='center__title-input'
+              onChange={() => null}/>
             <div className='center__title-name'>未命名项目</div>
           </div>
           <div className='center__save'>
@@ -52,31 +45,12 @@ const Header: React.FC = () => {
               已保存
             </div>
           </div>
-          <span className='center__driver'></span>
-          <span className='center__btn'>
-            <Button type='text' icon={<CopyFilled />} className='center__copy-btn'>生成副本</Button>
-          </span>
         </div>
         <div className='header__right'>
           <Space>
             <Space>
-              <Button className='right__btn'>合成</Button>
-              <Button className='right__btn'>发布</Button>
+              <Button type='primary' className='right__btn'>导出视频</Button>
             </Space>
-            <span className='right__driver'></span>
-            <div className='right__icon-wrapper'>
-              <RightSquareFilled className='right__icon' />
-            </div>
-            <div className='right__icon-wrapper'>
-              <FieldTimeOutlined className='right__icon' />
-            </div>
-            <div className='right__icon-wrapper'>
-              <CustomerServiceFilled className='right__icon'/>
-            </div>
-            <div className='right__icon-wrapper'>
-              <QuestionCircleFilled className='right__icon'/>
-            </div>
-            <Avatar className='right__avatar' icon={<UserOutlined/>}/>
           </Space>
         </div>
       </div>

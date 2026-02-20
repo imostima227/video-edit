@@ -82,6 +82,7 @@ class TimeLineWrapper{
         trackList: el.trackList.map(el => {
           const item: TrackRender = {
             id: el.id,
+            sourceId: el.sourceId,
             frames: el.frames,
             left: el.left,
             type: el.type,

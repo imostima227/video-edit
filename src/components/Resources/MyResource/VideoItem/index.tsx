@@ -1,6 +1,6 @@
 import React,{ useRef,useState,useMemo, memo } from 'react';
 import { timeFormat,timeFormatString,timeToSeconds } from '@api/videoTimeProcess';
-import { useAppDispatch } from '@/redux/hook';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { delVideo } from '@/redux/features/video/videoListSlice';
 import { setVideoItem } from '@/redux/features/video/videoItemSlice';
 import VideoList from '@/data_manage/VideoList/videolist';
@@ -16,8 +16,9 @@ interface VideoItemProps {
 }
 
 const VideoItem: React.FC<VideoItemProps> = ({ wrapperWidth,video,onClick }) => {
-  const videoListCtr = useMemo(() => VideoList.getInstance(),[]);
+  const videoListCtr = useMemo(() => VideoList.getInstance(),[]); // TODO：疑似存在useMemo滥用，待验证。VideoList是一个单例类，理论上只会实例化一次，但如果组件频繁卸载和挂载，可能会导致实例化多次。可以考虑将VideoList的实例提升到更高的组件层级，或者直接在模块作用域中创建实例，以确保全局唯一。
   const timeLineWrapper = useMemo(() => TimeLineWrapper.getInstance(),[]);
+  const curVideoItem = useAppSelector(state => state.videoItem.value);
   const dispatch = useAppDispatch();
   const figWidth = useRef(0);
   // const isEmpty = useAppSelector(state => state.isEmpty.value);
@@ -64,25 +65,35 @@ const VideoItem: React.FC<VideoItemProps> = ({ wrapperWidth,video,onClick }) => 
   };
 
   const handleClickDelete = (e: React.MouseEvent<HTMLSpanElement,MouseEvent>) => {
-    dispatch(setVideoItem({
-      id: '',
-      name: '',
-      videoUrl: '',
-      coverUrl: '',
-      duration: -1,
-    }));
+    e.stopPropagation(); // 此处要阻止冒泡，不然会触发父容器的点击事件。
+    
     if(video){
+      if (curVideoItem.id === video.id){
+        dispatch(setVideoItem({ id: '', name: '', videoUrl: '', coverUrl: '', duration: -1,
+        }));
+      }
+
       videoListCtr.delLocalVideo(video.id);
       dispatch(delVideo(video.id));
+
+      // 删除轨道上对应的视频
+      const tracksToDelete: string[] = [];
+      // 遍历找出所有来源是该 video.id 的轨道
+      timeLineWrapper.trackId2Track.forEach((track, trackId) => {
+        if (track.sourceId === video.id) {
+          tracksToDelete.push(trackId);
+        }
+      });
+      // 统一触发删除
+      tracksToDelete.forEach(trackId => timeLineWrapper.delTrack(trackId));
     }
-    e.stopPropagation(); // 此处要阻止冒泡，不然会触发父容器的点击事件。
   };
 
   const handleClickAddToTrack = (e: React.MouseEvent<HTMLSpanElement,MouseEvent>) => {
-    console.log('video add to track');
+    e.stopPropagation();
     if(video){
       const file = video.file;
-      const newTrack = new Track('video',file.slice(0,file.size,file.type),video.duration);
+      const newTrack = new Track('video', file.slice(0,file.size,file.type), video.duration, video.id);
       timeLineWrapper.addTrack(newTrack);
       //dispatch(setIsEmpty(timeLineWrapper.isEmpty));
       //dispatch(setMaxFrames(timeLineWrapper.maxFrames));

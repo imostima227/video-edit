@@ -1,14 +1,10 @@
 import React,{ useRef,useEffect,useState,useCallback } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { Switch } from 'antd'; // UI组件，用于切换
 import VideoFooter from './VideoFooter';
-import Scene3D from './Scene3D';
 
 import { TimeSliderRef } from './VideoFooter/TimeSlider'; // 引入 Ref 类型
 import { changeIsPlaying, setIsPlaying } from '@/redux/features/video/isVideoPlayingSlice';
 import { useAppDispatch,useAppSelector } from '@/redux/hook';
-import { setVideoTime, addVideoFrameTime } from '@/redux/features/video/videoTimeSlice';
+import { setVideoTime } from '@/redux/features/video/videoTimeSlice';
 import { decOneFrames,incOneFrames } from '@api/videoTimeProcess';
 import './index.less';
 
@@ -21,7 +17,6 @@ const Video: React.FC = () => {
   const dispatch = useAppDispatch();
   const [videoDuration,setVideoDuration] = useState<number>(0);
 
-  const [is3DMode, setIs3DMode] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerHeight = useRef(0);
@@ -106,44 +101,12 @@ const Video: React.FC = () => {
     });
   },[dispatch]);
 
-  // 3D模式 Loop
-  useEffect(() => {
-    let animationId: number;
-    let lastTime = performance.now();
-
-    const loop3D = (time: number) => {
-      if (!isVideoPlaying || !is3DMode) return; // 如果不是3D模式，或者暂停了，就不跑这里
-
-      const delta = time - lastTime;
-      // 模拟 30 FPS (约 33.33ms)
-      if (delta >= 33.33) {
-        dispatch(addVideoFrameTime()); // 手动推时间
-        lastTime = time;
-      }
-      animationId = requestAnimationFrame(loop3D);
-    };
-
-    if (isVideoPlaying && is3DMode) {
-      // 3D 模式播放时，启动这个循环
-      lastTime = performance.now();
-      animationId = requestAnimationFrame(loop3D);
-      
-      // 确保视频元素暂停，防止声音干扰
-      if (videoRef.current) videoRef.current.pause();
-    }
-
-    return () => cancelAnimationFrame(animationId);
-  }, [isVideoPlaying, is3DMode, dispatch]);
-
   // 视频渲染Loop
   useEffect(() => {
     let animationId: number;
     // let counter = 0;
 
     const render = () => {
-      // 如果切到了 3D 模式，原来的视频渲染逻辑要停止，否则会抢占资源
-      if (is3DMode) return;
-
       // counter = (counter + 1) % 1000;
       renderBody((video, canvas, context) => {
         if (canvas && video) {
@@ -159,8 +122,7 @@ const Video: React.FC = () => {
       });
     };
   
-    // 只有在非 3D 模式下，才去操作 video 标签
-    if (isVideoPlaying && !is3DMode && videoItem.videoUrl) {
+    if (isVideoPlaying &&  videoItem.videoUrl) {
       if (videoRef.current) {
         const playPromise = videoRef.current.play();
         if (playPromise !== undefined) {
@@ -170,7 +132,6 @@ const Video: React.FC = () => {
         animationId = requestAnimationFrame(render);
       }
     } else {
-      // 暂停或 3D 模式下，都要暂停视频标签
       if (videoRef.current) {
         videoRef.current.pause();
         dispatch(setVideoTime(videoRef.current.currentTime));
@@ -180,7 +141,7 @@ const Video: React.FC = () => {
     return () => {
       cancelAnimationFrame(animationId);
     };
-  }, [isVideoPlaying, is3DMode, dispatch, videoItem.videoUrl]); // 依赖项加入了 is3DMode
+  }, [isVideoPlaying, dispatch, videoItem.videoUrl]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -358,21 +319,22 @@ const Video: React.FC = () => {
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if(e.defaultPrevented){
-        return;
-      }
+      if(e.defaultPrevented) return;
+      
       if(videoItem.id !== ''){
-        e.preventDefault();
         switch(e.key){
           case ' ': {
+            e.preventDefault();
             dispatch(changeIsPlaying());
             break;
           }
           case 'ArrowLeft': {
+            e.preventDefault();
             handleClickDecFrame();
             break;
           }
           case 'ArrowRight': {
+            e.preventDefault();
             handleClickIncFrame();
           }
         }
@@ -391,49 +353,24 @@ const Video: React.FC = () => {
     <div className='video'>
 
       <div className='video__player-wrapper'>
-        <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 100 }}>
-          <span style={{ color: 'white', marginRight: 8 }}>3D Mode</span>
-          <Switch
-            checked={is3DMode}
-            onChange={(checked) => {
-              setIs3DMode(checked);
-              dispatch(setIsPlaying(false)); // 切换模式时自动暂停，防止状态混乱
-            }}
-          />
-        </div>
         <div className='video__player'>
           <div className='player__monitorContainer'>
             <div className='player__monitorInner'>
-              {/* 条件渲染：
-                  is3DMode 为 true 显示 R3F Canvas
-                  is3DMode 为 false 显示 原有结构
-              */}
-              
-              {is3DMode ? (
-                <div className='player_3d'>
-                  <Canvas camera={{ position: [0, 5, 10], fov: 50 }}>
-                    <color attach="background" args={['#1e1e1e']} />
-                    <Scene3D />
-                    <OrbitControls makeDefault />
-                  </Canvas>
-                </div>
-              ) : (
-                <>
-                  <video
-                    style={{ objectFit: 'contain', display: 'none' }}
-                    ref={videoRef}
-                    onEnded={() => { dispatch(setIsPlaying(false)); }}
-                  ></video>
-                  <canvas
-                    id='videoCanvas'
-                    width={1280}
-                    height={720}
-                    style={{ touchAction: 'none', cursor: 'inherit' }}
-                    ref={canvasRef}
-                    className='player__canvas'
-                  ></canvas>
-                </>
-              )}
+              <>
+                <video
+                  style={{ objectFit: 'contain', display: 'none' }}
+                  ref={videoRef}
+                  onEnded={() => { dispatch(setIsPlaying(false)); }}
+                ></video>
+                <canvas
+                  id='videoCanvas'
+                  width={1280}
+                  height={720}
+                  style={{ touchAction: 'none', cursor: 'inherit' }}
+                  ref={canvasRef}
+                  className='player__canvas'
+                ></canvas>
+              </>
             </div>
           </div>
         </div>

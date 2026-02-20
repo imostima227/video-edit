@@ -12,59 +12,24 @@ const sideItems = [
   },
   {
     id: uuid(),
-    iconSrc: '#icon-sucai',
-    value: '在线素材',
-  },
-  {
-    id: uuid(),
-    iconSrc: '#icon-yinpin',
-    value: '在线音频',
-  },
-  {
-    id: uuid(),
-    iconSrc: '#icon-mobanguanli',
-    value: '模板库',
-  },
-  {
-    id: uuid(),
-    iconSrc: '#icon-shengyin',
-    value: '数字人库',
-  },
-  {
-    id: uuid(),
-    iconSrc: '#icon-biaoqing',
-    value: '贴纸库',
-  },
-  {
-    id: uuid(),
-    iconSrc: '#icon-jiacuziti',
-    value: '花字库',
-  },
-  {
-    id: uuid(),
     iconSrc: '#icon-tiquzimu',
     value: '字幕编辑',
   },
-  {
-    id: uuid(),
-    iconSrc: '#icon-zhuanchang',
-    value: '转场库',
-  },
-  {
-    id: uuid(),
-    iconSrc: '#icon-lvjing',
-    value: '滤镜库',
-  },
-  {
-    id: uuid(),
-    iconSrc: '#icon-texiao',
-    value: '特效库',
-  },
-  {
-    id: uuid(),
-    iconSrc: '#icon-gongju',
-    value: '智能工具',
-  },
+  // {
+  //   id: uuid(),
+  //   iconSrc: '#icon-lvjing',
+  //   value: '滤镜库',
+  // },
+  /*{ id: uuid(),iconSrc: '#icon-sucai',value: '在线素材' },
+  { id: uuid(),iconSrc: '#icon-yinpin',value: '在线音频' },
+  {id: uuid(),iconSrc: '#icon-mobanguanli',value: '模板库'},
+  {id: uuid(),iconSrc: '#icon-shengyin',value: '数字人库'},
+  {id: uuid(),iconSrc: '#icon-biaoqing',value: '贴纸库',},
+  {id: uuid(),iconSrc: '#icon-jiacuziti',value: '花字库'},
+  {id: uuid(),iconSrc: '#icon-zhuanchang',value: '转场库',},
+  {id: uuid(),iconSrc: '#icon-texiao',value: '特效库',},
+  {id: uuid(),iconSrc: '#icon-gongju',value: '智能工具',
+  },*/
 ]; // 侧边栏的相关信息
 
 const Sidebar: React.FC = () => {
