@@ -28,51 +28,61 @@ class TrackWrapper {
   private isValidBlockType(blocktype: string){
     return blocktype === 'materials' || blocktype === 'main' || blocktype === 'audio';
   }
+
+  recalculate() {
+    if (this.trackList.length === 0) {
+      this.totalFrames = 0;
+      this.height = 0;
+      return;
+    }
+
+    if (this.blocktype === 'main') {
+      // 主轨道磁性吸附
+      let currentLeft = 0;
+      this.trackList.forEach(track => {
+        track.left = currentLeft;
+        currentLeft += track.frames;
+      });
+      this.totalFrames = currentLeft;
+    } else {
+      // 自由轨道(字幕、音频、特效)允许有空隙，位置由 track.left 绝对决定。
+      let maxFrames = 0;
+      this.trackList.forEach(track => {
+        const rightEdge = track.left + track.frames;
+        if (rightEdge > maxFrames) {
+          maxFrames = rightEdge;
+        }
+      });
+      this.totalFrames = maxFrames;
+    }
+
+    this.height = Math.max(...this.trackList.map(t => t.height));
+  }
   
-  addTrack(track: Track){
+  addTrack(track: Track, insertLeft?: number){
     if(this.type !== track.type){
       return;
     }
-    if(track.height > this.height){
-      this.height = track.height;
+
+    if (this.blocktype === 'main') {
+      track.left = this.totalFrames; // 主轨道新轨道直接添加在末尾
+    } else {
+      track.left = insertLeft !== undefined ? insertLeft : 0;
     }
-    track.left = this.totalFrames; // 每次在尾部增加轨道
-    this.totalFrames += track.frames;
     this.trackList.push(track);
+    this.recalculate();
   }
 
   delTrack(trackId: string){ // 待修改：需要更新totalFrames和height
-    let trackIndex = -1;
-    let trackItem;
-    let flag = false; // 用来记录是否需要更新轨道容器的宽度
-    const arr = this.trackList;
-    for(let i=0; i<arr.length; i++){
-      if(this.trackList[i].id === trackId){
-        trackIndex = i;
-        trackItem = arr[i];
-        arr.splice(i,1);
-      }
-    }
-    if(trackItem){
-      if(trackIndex === arr.length){
-        if(trackIndex > 0){ // 该容器不是只有这一个轨道
-          this.totalFrames = arr[trackIndex - 1].frames + arr[trackIndex - 1].left;
-        } else{
-          this.totalFrames = 0;
-        }
-      }
-      if(trackItem.height > this.height){
-        flag = true;
-      }
-    }
-    if(flag){ // 需要更新高度
-      this.height = -1;
-      arr.forEach(el => {
-        if(el.height > this.height){
-          this.height = el.height;
-        }
-      });
-    }
+    this.trackList = this.trackList.filter(t => t.id !== trackId);
+    this.recalculate();
+  }
+
+  moveTrack(oldIndex: number, newIndex: number) {
+    if (oldIndex < 0 || oldIndex >= this.trackList.length || newIndex < 0 || newIndex >= this.trackList.length) return;
+    const [movedTrack] = this.trackList.splice(oldIndex, 1);
+    this.trackList.splice(newIndex, 0, movedTrack);
+    this.recalculate();
   }
 }
 

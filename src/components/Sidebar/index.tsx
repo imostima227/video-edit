@@ -43,7 +43,7 @@ const Sidebar: React.FC = () => {
             sideItems.map((el) => {
               return <SideItem
                 isSelected={ selectedTab === el.value }
-                key={el.id}
+                key={el.value}
                 value={el.value}
                 id={el.id}
                 iconUrl={el.iconSrc}/>;

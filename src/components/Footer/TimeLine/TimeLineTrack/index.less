@@ -5,18 +5,55 @@
   box-sizing: border-box;
   margin-right: 1px;
   position: absolute;
-  
-  &__item--video{
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  .base-track-item() {
     height: 100%;
     min-width: 5px;
     border-radius: 5px;
-    background-color: @headerSaveTextColor;
-    &:hover{
-      border: 1px solid rgba(255,255,255,.5);
+    box-sizing: border-box;
+    /* 增加微弱的边框和渐变让片段更有立体感 */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.15) 100%);
+    opacity: 0.95;
+    transition: box-shadow 0.2s, filter 0.2s, border 0.2s;
+
+    &:hover {
+      border: 1px solid rgba(255, 255, 255, 0.5); /* 还原你之前的 hover 描边 */
+      filter: brightness(1.1); /* 稍微提亮，增加互动感 */
     }
   }
+  
+  &__item--video {
+    .base-track-item();
+    background-color: #5E5CE6; /* 靛蓝 - 视频核心 */
+  }
 
-  &__dropdown--video{
+  &__item--audio {
+    .base-track-item();
+    background-color: #30D158; /* 翡翠绿 - 音频 */
+  }
+
+  &__item--caption, &__item--fonts {
+    .base-track-item();
+    background-color: #FF9F0A; /* 琥珀橙 - 文字类 */
+  }
+
+  &__item--filter, &__item--effects {
+    .base-track-item();
+    background-color: #BF5AF2; /* 霓虹紫 - 滤镜特效 */
+  }
+
+  &__item--digital-people, &__item--pasters {
+    .base-track-item();
+    background-color: #64D2FF; /* 天蓝色 - 贴纸素材 */
+  }
+
+  &__dropdown--video {
     width: 165px;
     min-width: 77px;
     left: 0px;
@@ -25,19 +62,22 @@
     background-color: @dropDownBgColor;
     box-shadow: none;
     user-select: none;
-    .dropdown__wrapper--video{
+    
+    .dropdown__wrapper--video {
       display: flex;
       flex-direction: column;
       color: @headerTitleTextColor;
       font-size: 12px;
     }
-    .dropdown__item--video{
+    
+    .dropdown__item--video {
       width: 100%;
       margin: 1px 0;
       padding-left: 10px;
       border-radius: 2px;
       transition: background-color 0.1s ease-out;
-      &:hover{
+      
+      &:hover {
         background-color: @dropDownSelected;
         color: white;
       }
