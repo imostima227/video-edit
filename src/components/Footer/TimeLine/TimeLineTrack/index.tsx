@@ -3,6 +3,8 @@ import { Dropdown } from 'antd';
 import { useAppSelector } from '@/redux/hook';
 import TimeLineWrapper from '@data/TimeLine/timeline_wrapper';
 import { TrackRender } from '@type/track';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import './index.less';
 
 
@@ -15,6 +17,24 @@ const TimeLineTrack: React.FC<TimeLineTrackProps> = ({ track }) => {
   const frameWidth = useAppSelector(state => state.frameWidth.value);
   const timeLineWrapper = useMemo(() => TimeLineWrapper.getInstance(),[]);
   
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging, // 正在被拖拽时的状态
+  } = useSortable({ id: track.id });
+
+  const style: React.CSSProperties = {
+    width: track.frames * frameWidth - 1,
+    left: track.left * frameWidth,
+    transform: CSS.Translate.toString(transform), // 拖拽时的顺滑位移
+    transition,
+    zIndex: isDragging ? 999 : 1, // 拖拽时把它提到最上层，防止被遮挡
+    opacity: isDragging ? 0.8 : 1, // 拖拽时给一点半透明效果，视觉体验更好
+  };
+
   const handleClickDelete = () => {
     console.log(track);
     console.log(timeLineWrapper.trackId2Wrapper);
@@ -51,11 +71,11 @@ const TimeLineTrack: React.FC<TimeLineTrackProps> = ({ track }) => {
       trigger={['contextMenu']}
       dropdownRender={VideoMenu}>
       <div
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners}
         className='time-line-track'
-        style={{
-          width: track.frames * frameWidth - 1,
-          left: track.left * frameWidth,
-        }}
+        style={style}
         onContextMenu={(e) => {e.stopPropagation();}}>
         <div className={`time-line-track__item--${track.type}`}></div>
       </div>

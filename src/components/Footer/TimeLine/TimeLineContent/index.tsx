@@ -48,7 +48,12 @@ const TimeLineContent: React.FC<TimeLineContentProps> = ({ height,offsetX,actual
 
     document.addEventListener('addtrack',handleChangeTrack);
     document.addEventListener('deltrack',handleChangeTrack);
-    // return document.removeEventListener('addtrack',handleChangeTrackWrapper);
+    document.addEventListener('trackupdated', handleChangeTrack);
+    return () => {
+      document.removeEventListener('addtrack',handleChangeTrack);
+      document.removeEventListener('deltrack',handleChangeTrack);
+      document.removeEventListener('trackupdated', handleChangeTrack);
+    };
   },[dispatch,timeLineWrapper]);
 
   return (

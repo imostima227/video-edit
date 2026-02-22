@@ -34,6 +34,8 @@ const TimeLine: React.FC<TimeLineProps> = ({ wrapperWidth,height,setWrapperWidth
   const timeLineWrapper = useMemo(() => TimeLineWrapper.getInstance(),[]);
   const [offsetX,setOffsetX] = useState(0); //控制刻度尺的移动
   const [scrollHeight,setScrollHeight] = useState(6); //定义底部滚轮的高度
+  const [tick, setTick] = useState(0);
+  
   const wrapperHeight = window.innerHeight - HEADER_HEIGHT - FOOTER_HEADER_HEIGHT - TIMELINE_HEADER_HEIGHT - height;
   //const videoItem = useAppSelector(state => state.videoItem.value);
   const isEmpty = useAppSelector(state => state.isEmpty.value);
@@ -87,11 +89,16 @@ const TimeLine: React.FC<TimeLineProps> = ({ wrapperWidth,height,setWrapperWidth
       } else{
         dispatch(setFrameWidth(getMinFrameWidth(wrapperWidth,timeLineWrapper.maxFrames)));
       }
-      // console.log(wrapperWidth,timeLineWrapper.maxFrames);
+
+      setTick(t => t + 1);
     };
     document.addEventListener('addtrackwrapper',handleChangeTrackWrapper);
     document.addEventListener('deltrackwrapper',handleChangeTrackWrapper);
-    // return document.removeEventListener('addtrack',handleAddTrackWrapper);
+    
+    return () => {
+      document.removeEventListener('addtrackwrapper',handleChangeTrackWrapper);
+      document.removeEventListener('deltrackwrapper',handleChangeTrackWrapper);
+    };
   },[dispatch,timeLineWrapper.isEmpty,timeLineWrapper.maxFrames,wrapperWidth]);
 
 
