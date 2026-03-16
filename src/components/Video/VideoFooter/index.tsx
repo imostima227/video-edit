@@ -8,12 +8,14 @@ import { changeIsPlaying } from '@/redux/features/video/isVideoPlayingSlice';
 import './index.less';
 
 interface VideoFooterProps {
-  duration: number,
-  onSeek: (time: number) => void,
-  onClickDecFrame: () => void,
-  onClickIncFrame: () => void,
-  onClickToStart: () => void,
-  onClickToEnd: () => void,
+  duration: number;
+  onSeek: (time: number) => void;
+  onClickDecFrame: () => void;
+  onClickIncFrame: () => void;
+  onClickToStart: () => void;
+  onClickToEnd: () => void;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
   timeSliderRef: React.RefObject<TimeSliderRef>
 }
 
@@ -70,6 +72,8 @@ const VideoFooter: React.FC<VideoFooterProps> = ({
   onClickIncFrame,
   onClickToStart,
   onClickToEnd,
+  onDragStart,
+  onDragEnd,
   timeSliderRef }) => {
   const dispatch = useAppDispatch();
   const videoItem = useAppSelector(state => state.videoItem.value);
@@ -84,7 +88,9 @@ const VideoFooter: React.FC<VideoFooterProps> = ({
       <TimeSlider
         ref={timeSliderRef} // 透传 Ref
         duration={duration}
-        onSeek={onSeek}/>
+        onSeek={onSeek}
+        onDragEnd={onDragEnd}
+        onDragStart={onDragStart}/>
       <div className='video-footer__control'>
         <div className='control__left'>
           <Dropdown menu={items1} placement='topLeft' trigger={['click']} overlayClassName='dropdown'>

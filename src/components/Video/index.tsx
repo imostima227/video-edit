@@ -23,6 +23,15 @@ const Video: React.FC = () => {
   const containerWidth = useRef(0);
 
   const timeSliderRef = useRef<TimeSliderRef>(null);
+  const isSliderDraggingRef = useRef(false);
+
+
+  const handleDragStart = useCallback(() => {
+    isSliderDraggingRef.current = true;
+  }, []);
+  const handleDragEnd = useCallback(() => {
+    isSliderDraggingRef.current = false;
+  }, []);
   //console.log(windowSize);
   /**
    * 将需要用到canvas和video的各个函数的共有部分提取出来减少代码重复
@@ -151,9 +160,11 @@ const Video: React.FC = () => {
       if(video && canvas){
         const context = canvas.getContext('2d');
         drawVideo(video,canvas,context);
-        dispatch(setVideoTime(video.currentTime));
-        // 同时更新 UI
-        timeSliderRef.current?.updateTime(video.currentTime);
+        // 只有当非拖拽状态（比如正常播放、点击按钮跳跃）时，才同步状态。
+        if (!isSliderDraggingRef.current) {
+          dispatch(setVideoTime(video.currentTime));
+          timeSliderRef.current?.updateTime(video.currentTime);
+        }
       }
     };
 
@@ -381,7 +392,9 @@ const Video: React.FC = () => {
           onClickDecFrame={handleClickDecSecond}
           onClickIncFrame={handleClickIncSecond}
           onClickToStart={handleClickToStart}
-          onClickToEnd={handleClickToEnd} />
+          onClickToEnd={handleClickToEnd}
+          onDragEnd={handleDragEnd}
+          onDragStart={handleDragStart} />
       </div>
     </div>
   );
